@@ -1,0 +1,179 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --muted: #656d76;
+  --border: #d0d7de;
+  --panel: #f6f8fa;
+  --accent: #0969da;
+  --del-bg: #ffebe9;
+  --del-hl: #ffb3ad;
+  --ins-bg: #e6ffec;
+  --ins-hl: #8ce0a1;
+  --fold-bg: #ddf4ff;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --fg: #e6edf3;
+    --muted: #8d96a0;
+    --border: #30363d;
+    --panel: #161b22;
+    --accent: #4493f8;
+    --del-bg: #3c1618;
+    --del-hl: #8e2a2e;
+    --ins-bg: #12321e;
+    --ins-hl: #23763a;
+    --fold-bg: #12263f;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+.top, main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.top { padding-top: 12px; }
+.top h1 { font-size: 1.3rem; margin: 0; }
+.note { margin: 2px 0 0; color: var(--muted); font-size: 0.85rem; }
+
+/* ---- ツールバー ---- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 12px 0;
+}
+.toolbar fieldset {
+  display: flex;
+  gap: 12px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.toolbar fieldset[hidden] { display: none; }
+.toolbar legend {
+  float: left;
+  margin-right: 4px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.75;
+}
+.toolbar label { cursor: pointer; white-space: nowrap; }
+
+button {
+  font: inherit;
+  color: var(--fg);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+
+/* ---- 入力欄 ---- */
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.pane { display: flex; flex-direction: column; min-width: 0; }
+.pane-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.pane-label { font-weight: 600; }
+.pane-head button { padding: 0 8px; font-size: 0.85rem; }
+.pane textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  font: 13px/1.45 var(--mono);
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  tab-size: 4;
+}
+.pane textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+/* ---- 結果 ---- */
+.results { margin: 20px 0 40px; display: flex; flex-direction: column; gap: 20px; }
+.empty-hint { color: var(--muted); }
+
+.pair { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.pair-head {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 6px 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.pair-head h2 { font-size: 1rem; margin: 0; }
+.stat-add { color: #1a7f37; font-weight: 600; }
+.stat-del { color: #cf222e; font-weight: 600; }
+@media (prefers-color-scheme: dark) {
+  .stat-add { color: #3fb950; }
+  .stat-del { color: #f85149; }
+}
+.same { padding: 10px 12px; color: var(--muted); }
+
+.diff-wrap { overflow-x: auto; }
+table.diff {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font: 13px/1.45 var(--mono);
+}
+table.diff td { padding: 0 6px; vertical-align: top; }
+table.diff td.ln {
+  width: 4.5em;
+  text-align: right;
+  color: var(--muted);
+  user-select: none;
+}
+table.diff td.sign { width: 1.5em; text-align: center; user-select: none; }
+table.diff td.code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 4;
+}
+table.diff.split td.code { border-right: 1px solid var(--border); }
+table.diff.split td.code:last-child { border-right: 0; }
+
+td.del, tr.del td { background: var(--del-bg); }
+td.ins, tr.ins td { background: var(--ins-bg); }
+td.blank { background: var(--panel); }
+tr.del .hl, td.del .hl { background: var(--del-hl); border-radius: 2px; }
+tr.ins .hl, td.ins .hl { background: var(--ins-hl); border-radius: 2px; }
+
+tr.fold td { padding: 0; background: var(--fold-bg); }
+tr.fold button {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+  font: 12px/1.8 var(--mono);
+}
+tr.fold button:hover { text-decoration: underline; }

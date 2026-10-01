@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Text Diff</title>
+  <meta name="description" content="貼り付けたテキストの差分をその場で表示する、シンプルな差分ツール。データは外部に送信されません。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Text Diff</h1>
+    <p class="note">テキストはブラウザ内だけで処理され、どこにも送信・保存されません。</p>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <fieldset id="mode-group" hidden>
+        <legend>比較方式</legend>
+        <label><input type="radio" name="mode" value="base" checked> 基準(A) vs 他</label>
+        <label><input type="radio" name="mode" value="chain"> 隣同士</label>
+      </fieldset>
+      <fieldset>
+        <legend>表示</legend>
+        <label><input type="radio" name="view" value="inline" checked> インライン</label>
+        <label><input type="radio" name="view" value="split"> 左右並べ</label>
+      </fieldset>
+      <label class="check"><input type="checkbox" id="ignore-ws"> 空白の違いを無視</label>
+      <button type="button" id="add-btn">＋ テキストを追加</button>
+    </div>
+
+    <div id="inputs" class="inputs"></div>
+
+    <div id="results" class="results" aria-live="polite"></div>
+  </main>
+
+  <script src="diff.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
