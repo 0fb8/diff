@@ -5,12 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Text Diff</title>
   <meta name="description" content="貼り付けたテキストの差分をその場で表示する、シンプルな差分ツール。データは外部に送信されません。">
+  <script>
+    // 描画前にテーマを決めてちらつきを防ぐ（保存された選択 → OS の設定の順）
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="top">
-    <h1>Text Diff</h1>
-    <p class="note">テキストはブラウザ内だけで処理され、どこにも送信・保存されません。</p>
+    <div>
+      <h1>Text Diff</h1>
+      <p class="note">テキストはブラウザ内だけで処理され、どこにも送信・保存されません。</p>
+    </div>
+    <button type="button" id="theme-btn"></button>
   </header>
 
   <main>

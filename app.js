@@ -236,6 +236,35 @@
     return td;
   }
 
+  // ---- テーマ ----------------------------------------------------------
+
+  var themeBtn = document.getElementById('theme-btn');
+  var root = document.documentElement;
+
+  function updateThemeBtn() {
+    var dark = root.dataset.theme === 'dark';
+    themeBtn.textContent = dark ? '☀' : '☾';
+    themeBtn.title = dark ? 'ライトモードにする' : 'ダークモードにする';
+    themeBtn.setAttribute('aria-label', themeBtn.title);
+  }
+
+  themeBtn.addEventListener('click', function () {
+    root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+    updateThemeBtn();
+  });
+
+  // ボタンで選んでいない間は OS の設定変更に追従する
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (err) {}
+    if (saved) return;
+    root.dataset.theme = e.matches ? 'dark' : 'light';
+    updateThemeBtn();
+  });
+
+  updateThemeBtn();
+
   // ---- 初期化 ----------------------------------------------------------
 
   addBtn.addEventListener('click', function () {

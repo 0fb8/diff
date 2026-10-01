@@ -10,25 +10,28 @@
   --ins-bg: #e6ffec;
   --ins-hl: #8ce0a1;
   --fold-bg: #ddf4ff;
+  --stat-add: #1a7f37;
+  --stat-del: #cf222e;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d1117;
-    --fg: #e6edf3;
-    --muted: #8d96a0;
-    --border: #30363d;
-    --panel: #161b22;
-    --accent: #4493f8;
-    --del-bg: #3c1618;
-    --del-hl: #8e2a2e;
-    --ins-bg: #12321e;
-    --ins-hl: #23763a;
-    --fold-bg: #12263f;
-    color-scheme: dark;
-  }
+/* テーマは index.html の <head> 内スクリプトが data-theme に設定する */
+:root[data-theme="dark"] {
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --muted: #8d96a0;
+  --border: #30363d;
+  --panel: #161b22;
+  --accent: #4493f8;
+  --del-bg: #3c1618;
+  --del-hl: #8e2a2e;
+  --ins-bg: #12321e;
+  --ins-hl: #23763a;
+  --fold-bg: #12263f;
+  --stat-add: #3fb950;
+  --stat-del: #f85149;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -46,7 +49,14 @@ body {
   padding: 0 16px;
 }
 
-.top { padding-top: 12px; }
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 12px;
+}
+#theme-btn { flex: none; font-size: 1.1rem; line-height: 1.4; padding: 2px 8px; }
 .top h1 { font-size: 1.3rem; margin: 0; }
 .note { margin: 2px 0 0; color: var(--muted); font-size: 0.85rem; }
 
@@ -129,12 +139,8 @@ button:hover { border-color: var(--accent); }
   border-bottom: 1px solid var(--border);
 }
 .pair-head h2 { font-size: 1rem; margin: 0; }
-.stat-add { color: #1a7f37; font-weight: 600; }
-.stat-del { color: #cf222e; font-weight: 600; }
-@media (prefers-color-scheme: dark) {
-  .stat-add { color: #3fb950; }
-  .stat-del { color: #f85149; }
-}
+.stat-add { color: var(--stat-add); font-weight: 600; }
+.stat-del { color: var(--stat-del); font-weight: 600; }
 .same { padding: 10px 12px; color: var(--muted); }
 
 .diff-wrap { overflow-x: auto; }
